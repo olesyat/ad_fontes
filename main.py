@@ -1,62 +1,41 @@
 def get_max_key(keys):
-    return max(keys,key=lambda x: len(x))
+    return max(keys, key=lambda x: len(x))
 
 
 def dp(coalition):
-    f = dict()
-    universe = set(key for key in coalition.keys())#TODO
-    print(universe)
+    CS = set(coalition.keys())
+    f1 = dict()
+    f2 = dict()
     max_len = len(get_max_key(coalition.keys()))
 
-    partitions=2**max_len-1#TODO
+    for key in CS:
+        if len(key)==1:
+            f1[key]=key
+            f2[key]=coalition[key]
+    for s in range(2,max_len+1):
+        for c in coalition:
+            if len(c)==s:
+                temp_values = []
+                for c_sp in range(1,int(0.5*len(c)+1)):
+                    temp_values.append()
+                f2[c]=max(f2[c[:c_sp]]+f2[c.r])
+        # elif len(key) == 2:
+        #     if coalition[(key[0],)] + coalition[(key[1],)] < coalition[key]:
+        #         f1[key]=key
+        #         f2[key]=coalition[key]
+        #     else:
+        #         f1[key]=((key[0],), (key[1],))
+        #         f2[key]=coalition[(key[0],)] + coalition[(key[1],)]
 
-    for i in range(1,max_len+1):
-            f[(i,)] = coalition[(i,)]
+    for s in range(2, max_len):
+        for c in coalition:
+            if len(c) == s:
+                f2[c] = max()
 
-    for key in coalition:
-        if len(key) == 2:
-            separate = 0
-            new_key = []
-            for part in key:
-                separate+=coalition[(part,)]
-                new_key.append((part,))
-            if separate < coalition[key]:
-                f[key] = coalition[key]
-            else:
-                a = tuple(new_key)
-                f[a] = sum(coalition[(part,)]for part in key)
-    #helper(3)
-    # helper(2)
-    # helper(3)
+    for c in CS:
+        if f1[c] != c:
+            CS = CS.remove(c).union({f1[c],})
 
-    print(f)
-    #
-    # for key in SET:
-    #     if type(key) != int and len(key) == 2:
-    #         if SET[key[0]] + SET[key[1]] > SET[key]:
-    #             # f[({(key[0]), (key[1])})] = SET[key[0]] + SET[key[1]]
-    #             f1.append([{key[0]}, {key[1]}])
-    #             f2.append([SET[key[0]] + SET[key[1]]])
-    #         else:
-    #             f1.append([{key[0], key[1]}])
-    #             f2.append([SET[key]])
-
-
-    # if type(key) == int:
-    #     f1.append([{key}])
-    #     f2.append([SET[key]])
-    # elif len(key) == 2:
-    #     # print(key)
-    #     if SET[key[0]] + SET[key[1]] > SET[key]:
-    #         f1.append([{key[0]}, {key[1]}])
-    #         f2.append([SET[key[0]] + SET[key[1]]])
-    #     else:
-    #         f1.append([{key[0], key[1]}])
-    #         f2.append([SET[key]])
-
-
-    # for i in range(len(f1)):
-    #     print(f1[i], f2[i])
 
 
 input_set = {(1,): 30, (2,): 40, (3,): 25, (4,): 45,
