@@ -1,38 +1,31 @@
-def get_max_length(keys):
-    return len(max(keys,key=lambda x: len(x)))
+def get_max_key(keys):
+    return max(keys,key=lambda x: len(x))
 
 
 def dp(coalition):
     f = dict()
-    max_len = get_max_length(coalition.keys())
-    print(max_len)
+    universe = set(key for key in coalition.keys())#TODO
+    print(universe)
+    max_len = len(get_max_key(coalition.keys()))
 
-    partitions=2**max_len-1
+    partitions=2**max_len-1#TODO
 
     for i in range(1,max_len+1):
             f[(i,)] = coalition[(i,)]
 
-    def helper(i):
-        for key in coalition:
-            if len(key) == i:
-                separate = 0
-                new_key = []
-                for part in key:
-                    separate+=coalition[(part,)]
-                    new_key.append((part,))
-                if separate < coalition[key]:
-                    f[key] = coalition[key]
-                else:
-                    a = tuple(new_key)
-                    f[a] = sum(coalition[(part,)]for part in key)#coalition[(key[0],)] + coalition[(key[1],)]
-
-
-
-                # else:
-                #     break
-
-    helper(2)
-    helper(3)
+    for key in coalition:
+        if len(key) == 2:
+            separate = 0
+            new_key = []
+            for part in key:
+                separate+=coalition[(part,)]
+                new_key.append((part,))
+            if separate < coalition[key]:
+                f[key] = coalition[key]
+            else:
+                a = tuple(new_key)
+                f[a] = sum(coalition[(part,)]for part in key)
+    #helper(3)
     # helper(2)
     # helper(3)
 
