@@ -1,44 +1,55 @@
+import itertools
+
+def all_partitions(process):
+    return tuple(itertools.chain(
+        *[itertools.combinations(process, i) for i in range(1, len(process))]))
+
+
 def get_max_key(keys):
     return max(keys, key=lambda x: len(x))
 
 
 def dp(coalition):
-    CS = set(coalition.keys())
+    #TODO
+    solution = []
+    def find_rec(coalit):
+        print(coalit)
+        if f1[coalit] == coalit:
+            solution.append(coalit)
+            return
+        else:
+            find_rec(f1[coalit][0]), find_rec(f1[coalit][1])
+    #TODO end
+    keys = set(coalition.keys())
     f1 = dict()
     f2 = dict()
-    max_len = len(get_max_key(coalition.keys()))
+    max_key = get_max_key(coalition.keys())
+    max_len = len(max_key)
 
-    for key in CS:
-        if len(key)==1:
-            f1[key]=key
-            f2[key]=coalition[key]
-    for s in range(2,max_len+1):
-        for c in coalition:
-            if len(c)==s:
-                temp_values = []
-                c_sps = []
-                for c_sp in range(1,int(0.5*len(c)+1)):
-                    c_sps.append(c_sp)
-                    temp_values.append(f2[c[:c_sp]]+f2[c[c_sp:]])
-                f2[c]=max(temp_values)
+    for key in keys:
+        if len(key) == 1:
+            f1[key] = key
+            f2[key] = coalition[key]
 
-                if f2[c] >= coalition[c]:
-                    c_s = c_sps[temp_values.index(f2[c])]
-
-                    f1[c] = ((c[:c_s],),(c[c_s:],))
-                elif f2[c] < coalition[c]:
-                    f1[c] = c
-                    f2[c] = coalition[c]
-
-  
-    for key in f1:
-        print(f1[key], f2[key])
-
-
-    # for c in CS:
-    #     if f1[c] != c:
-    #         CS = CS.remove(c).union({f1[c],})
-
+    for s in range(2, max_len + 1):
+        for c in filter(lambda x: len(x) == s, keys):
+            partitions = all_partitions(c)
+            temp_values = [
+                f2[c_sp] + f2[tuple(sorted(set(c).difference(set(c_sp))))] for
+                c_sp in partitions]
+            f2[c] = max(temp_values)
+            if f2[c] >= coalition[c]:
+                c_s = partitions[temp_values.index(f2[c])]
+                c_s = (c_s, tuple(sorted(set(c).difference(set(c_s)))))
+                f1[c] = c_s
+            else:
+                f1[c] = c
+                f2[c] = coalition[c]
+    print(f1)
+    print(f2)
+    CS = max_key
+    find_rec(CS)
+    return solution,f2[CS]
 
 
 input_set = {(1,): 30, (2,): 40, (3,): 25, (4,): 45,
@@ -47,4 +58,4 @@ input_set = {(1,): 30, (2,): 40, (3,): 25, (4,): 45,
              (1, 2, 3): 90, (1, 2, 4): 120, (1, 3, 4): 100,
              (2, 3, 4): 115, (1, 2, 3, 4): 140}
 # print(input_set)
-dp(input_set)
+print(dp(input_set))
