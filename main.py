@@ -1,4 +1,6 @@
 import itertools
+import psutil
+
 
 def all_partitions(process):
     return tuple(itertools.chain(
@@ -10,16 +12,16 @@ def get_max_key(keys):
 
 
 def dp(coalition):
-    #TODO
+    print(psutil.virtual_memory())
     solution = []
+
     def find_rec(coalit):
-        print(coalit)
         if f1[coalit] == coalit:
             solution.append(coalit)
             return
         else:
             find_rec(f1[coalit][0]), find_rec(f1[coalit][1])
-    #TODO end
+
     keys = set(coalition.keys())
     f1 = dict()
     f2 = dict()
@@ -45,17 +47,19 @@ def dp(coalition):
             else:
                 f1[c] = c
                 f2[c] = coalition[c]
-    print(f1)
-    print(f2)
     CS = max_key
     find_rec(CS)
-    return solution,f2[CS]
+    print(psutil.virtual_memory())
+    return solution, f2[CS]
 
 
-input_set = {(1,): 30, (2,): 40, (3,): 25, (4,): 45,
-             (1, 2): 50, (1, 3): 60, (1, 4): 80,
-             (2, 3): 55, (2, 4): 70, (3, 4): 80,
-             (1, 2, 3): 90, (1, 2, 4): 120, (1, 3, 4): 100,
-             (2, 3, 4): 115, (1, 2, 3, 4): 140}
+input_set = {(1,): 130, (2,): 100, (3,): 60, (4,): 30, (5,): 80, (1, 2): 130,
+             (1, 3): 85, (1, 4): 30, (1, 5): 60, (2, 3): 100, (2, 4): 45,
+             (2, 5): 35, (3, 4): 100, (3, 5): 95, (4, 5): 85, (1, 2, 3): 120,
+             (1, 2, 4): 105, (1, 2, 5): 110, (1, 3, 4): 100, (1, 3, 5): 100,
+             (1, 4, 5): 35, (2, 3, 4): 130, (2, 3, 5): 70, (2, 4, 5): 125,
+             (3, 4, 5): 135, (1, 2, 3, 4): 55, (1, 2, 3, 5): 55,
+             (1, 2, 4, 5): 85, (1, 3, 4, 5): 35, (2, 3, 4, 5): 90,
+             (1, 2, 3, 4, 5): 135}
 # print(input_set)
 print(dp(input_set))
