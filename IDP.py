@@ -36,7 +36,7 @@ def dp(coalition):
     for s in range(2, max_len + 1):
         for c in filter(lambda x: len(x) == s, keys):
             max_value = coalition[c]
-            max_coal = c
+            f1[c] = c
             lower_bound, upper_bound = 1, s // 2
             partitions = all_partitions(c)
 
@@ -62,6 +62,7 @@ def dp(coalition):
             #     f1[c] = c
             #     f2[c] = coalition[c]
     CS = max_key
+    #print(f1)
     find_rec(CS)
     return solution, f2[CS]
 
