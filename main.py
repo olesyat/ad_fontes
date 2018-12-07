@@ -13,7 +13,6 @@ def get_max_key(keys):
 
 
 def dp(coalition):
-    print(psutil.virtual_memory())
     solution = []
 
     def find_rec(coalit):
@@ -50,7 +49,6 @@ def dp(coalition):
                 f2[c] = coalition[c]
     CS = max_key
     find_rec(CS)
-    print(psutil.virtual_memory())
     return solution, f2[CS]
 
 
