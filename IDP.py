@@ -35,18 +35,32 @@ def dp(coalition):
 
     for s in range(2, max_len + 1):
         for c in filter(lambda x: len(x) == s, keys):
+            max_value = coalition[c]
+            max_coal = c
+            lower_bound, upper_bound = 1, s // 2
             partitions = all_partitions(c)
-            lower_bound, upper_bound = 1, s//2
-            temp_values = [
-                f2[c_sp] + f2[tuple(sorted(set(c).difference(set(c_sp))))] if len(c_sp) == lower_bound for c_sp in partitions]
-            f2[c] = max(temp_values)
-            if f2[c] >= coalition[c]:
-                c_s = partitions[temp_values.index(f2[c])]
-                c_s = (c_s, tuple(sorted(set(c).difference(set(c_s)))))
-                f1[c] = c_s
-            else:
-                f1[c] = c
-                f2[c] = coalition[c]
+
+            for c1 in partitions:
+                if len(c1) <= upper_bound:
+                    c2 = tuple(sorted(set(c).difference(set(c1))))
+                    if max_value < f2[c1] + f2[c2]:
+                        max_value = f2[c1] + f2[c2]
+                        #print(c1, c2)
+                        f1[c] = (c1, c2)
+                f2[c] = max_value
+
+
+            #
+            # #temp_values = [
+            #  #   f2[c_sp] + f2[tuple(sorted(set(c).difference(set(c_sp))))] if len(c_sp) == lower_bound for c_sp in partitions]
+            # f2[c] = max(temp_values)
+            # if f2[c] >= coalition[c]:
+            #     c_s = partitions[temp_values.index(f2[c])]
+            #     c_s = (c_s, tuple(sorted(set(c).difference(set(c_s)))))
+            #     f1[c] = c_s
+            # else:
+            #     f1[c] = c
+            #     f2[c] = coalition[c]
     CS = max_key
     find_rec(CS)
     return solution, f2[CS]
