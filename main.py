@@ -1,6 +1,7 @@
 import itertools
-import psutil
+import tracemalloc
 
+tracemalloc.start()
 
 def all_partitions(process):
     return tuple(itertools.chain(
@@ -63,3 +64,8 @@ input_set = {(1,): 130, (2,): 100, (3,): 60, (4,): 30, (5,): 80, (1, 2): 130,
              (1, 2, 3, 4, 5): 135}
 # print(input_set)
 print(dp(input_set))
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics('filename')
+
+for stat in top_stats:
+    print(stat)
