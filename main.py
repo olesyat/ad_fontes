@@ -56,7 +56,7 @@ def dp(coalition):
     return solution, f2[CS]
 
 
-input_set = read_sample("10_0_sample")
+input_set = read_sample("16_0_sample")
 
 tracemalloc.start()
 

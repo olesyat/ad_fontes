@@ -56,7 +56,7 @@ def idp(coalition):
     print(counter)
     return solution, f2[CS]
 
-input_set = read_sample("19_0_sample")
+input_set = read_sample("7_0_sample")
 
 tracemalloc.start()
 
