@@ -37,7 +37,7 @@ def dp(coalition):
     for s in range(2, max_len + 1):
         for c in filter(lambda x: len(x) == s, keys):
             partitions = all_partitions(c)
-            len(partitions)
+            counter+=len(partitions)
             temp_values = [
                 f2[c_sp] + f2[tuple(sorted(set(c).difference(set(c_sp))))] for
                 c_sp in partitions]
@@ -56,7 +56,7 @@ def dp(coalition):
     return solution, f2[CS]
 
 
-input_set = read_sample("19_0_sample")
+input_set = read_sample("10_0_sample")
 
 tracemalloc.start()
 

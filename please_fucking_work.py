@@ -34,21 +34,38 @@ def idp(coalition):
                 coalition[c] = max_value
 
     CS = max_key
-    partitions = all_partitions(CS, len(CS) // 2 + 1)
+    def my_func(cs):
 
-    for c1 in partitions:
-        c2 = tuple(sorted(set(CS).difference(set(c1))))
+        partitions = all_partitions(cs, len(cs) // 2 + 1)
 
-        if coalition[CS] == coalition[c1] + coalition[c2]:
-            solution.append(c1, )
-            solution.append(c2, )
-            break
+        for c1 in partitions:
+            c2 = tuple(sorted(set(cs).difference(set(c1))))
 
+            if coalition[cs] == coalition[c1] + coalition[c2]:
+                solution.append(c1, )
+
+                check = len(solution)
+                my_func(c1, )
+                if len(solution) != check:
+                    solution.remove(c1, )
+
+
+                solution.append(c2, )
+                check = len(solution)
+                my_func(c2, )
+                if len(solution) != check:
+                    solution.remove(c2, )
+
+
+
+
+
+    my_func(CS)
     print(counter)
-    return solution, coalition[CS]
+    return set(solution), coalition[CS]
 
 
-input_set = read_sample("20_0_sample")
+input_set = read_sample("10_0_sample")
 
 tracemalloc.start()
 
@@ -57,5 +74,4 @@ snapshot = tracemalloc.take_snapshot()
 top_stats = snapshot.statistics('filename')
 tracemalloc.stop()
 
-for stat in top_stats:
-    print(stat)
+print(top_stats[0])
